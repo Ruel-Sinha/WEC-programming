@@ -13,7 +13,7 @@
 #include "headers/alg_generator_fail.hpp"
 #include "headers/alg_grid_fail.hpp"
 #include "headers/alg_no_event.hpp"
-#include "headers/charge_generator.hpp"
+#include "headers/charge_battery.hpp"
 #include "headers/json.hpp"
 
 using namespace std;
@@ -96,8 +96,6 @@ int main(void) {
       dist.grid = 0;
     }
 
-    result.generator = 0;
-
     json response;
     response["buildings"] = json::array();
 
@@ -107,7 +105,7 @@ int main(void) {
                                        {"grid", dist.grid}});
     }
 
-    response["generator"] = result.generator;
+    response["generator"] = 0;
 
     // sends json back
     std::string response_str = response.dump() + "\n";
