@@ -1,4 +1,5 @@
-#include charge_battery.hpp
+#include "headers/charge_battery.hpp"
+#include <cmath>
 
 #ifndef GENERATOR_FAIL
 #define GENERATOR_FAIL 2
@@ -46,11 +47,22 @@ int chargeBattery(const bool forecast, const int event, const struct building_ve
         estimate_need_non_lecture = (2 * non_lecture_demand[hour]) - non_lecture_demand[hour - 1];
     }
 
-
+    int charge_to;
     if ((hour < 20) || ((hour < 23) && (forecast == CLOUDY))) {
-
+        charge_to = estimate_need_lecture + estimate_need_non_lecture;
     } else {
-
+        charge_to = estimate_need_lecture;
     }
+
+    if (hour > 19) {
+        double chance_grid_cheaper = ((double) 4) / ((double) 15);   // chance that the grid is cheaper and there is no battery failure on a given day
+        double cumulative = std::pow(chance_grid_cheaper, (24 - hour));
+        double chance_battery_needed = 1 - cumulative;
+        charge_to *= (int)
+    }
+
+    charge_to = (100 < charge_to) ? (100) : (charge_to);
+
+
     
 }
