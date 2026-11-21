@@ -24,14 +24,14 @@ building_return NoChange(building_vector buildings) {
         } else {
           int loadRem = load - solarRem; // remaining load after solar
           if(grid_price <= generator_price) {
-            buildingEnergyDists.push_back(energy_dist(solarRem, 0, loadRem));
+            buildingEnergyDists.push_back(energy_dist{solarRem, 0, loadRem});
           } else {
             if(battery >= loadRem) {
-              buildingEnergyDists.push_back(energy_dist(solarRem, loadRem, 0));
+              buildingEnergyDists.push_back(energy_dist{solarRem, loadRem, 0});
               battery -= loadRem;
             } else {
               loadRem -= battery; // grid after using all the battery
-              buildingEnergyDists.push_back(energy_dist(solarRem, battery, loadRem));
+              buildingEnergyDists.push_back(energy_dist{solarRem, battery, loadRem});
             }
           }
           solarRem = 0;
