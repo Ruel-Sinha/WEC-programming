@@ -124,6 +124,7 @@ int main(void) {
       response["buildings"].push_back({{"solar", dist.solar},
                                        {"battery", dist.battery},
                                        {"grid", dist.grid}});
+      batter -= dist.battery;
     }
 
     response["generator"] = generator;
@@ -131,6 +132,9 @@ int main(void) {
     // sends json back
     std::string response_str = response.dump() + "\n";
     send(clientSocket, response_str.c_str(), response_str.size(), 0);
+
+    hour++;
+    batter += generator;
   }
 
   close(clientSocket);
