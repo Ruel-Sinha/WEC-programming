@@ -7,6 +7,7 @@ using namespace std;
 
 extern int grid_price;
 
+extern double grid_price;
 /*
 0 - no event
 1 - cloudy weather
