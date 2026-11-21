@@ -1,24 +1,18 @@
 #include "../globals.h"
+#include "../headers/no_solar.hpp"
 
-building_return NoChange(building_vector a) {
-  int size = sizeof(a.buildings);
-  int solar_rem = 200;
+building_return NoChange(building_vector buildings) {
+  vector<building> allBuildings = buildings.buildings;
+  vector<energy_dist> buildingEnergyDists;
 
-  building_return bu(size);
+  for (int i = 0; i < allBuildings.size(); i++) {
+    building curBuilding = allBuildings[i];
+    bool isLectureHall = curBuilding.isLectureHall;
+    int load = curBuilding.load;
 
-  vector<building> allBuildings = a.buildings;
-
-  size = allBuildings.size();
-
-  for (int i = 0; i < size; i++) {
-    if (allBuildings[i].isLectureHall == true) {
-      if (grid_price > 1 && battery)
-        battery
+    if (isLectureHall) {
+      buildingEnergyDists.push_back(no_solar_energy_dist(load));
     } else {
-      if (allBuildings[i].load < solar_rem) {
-        bu.building_energy_dists[i].solar = allBuildings[i].load;
-      }
     }
   }
-  return bu;
 }
