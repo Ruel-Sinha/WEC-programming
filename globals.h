@@ -19,6 +19,11 @@ struct building {
   int load;
 };
 
+struct building_vector {
+  vector<int> building;
+  building_vector(size_t n) : building(n) {};
+};
+
 struct energy_dist {
   int solar;
   int battery;
