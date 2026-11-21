@@ -101,12 +101,18 @@ int main(void) {
       building_list.buildings.push_back(building1);
     }
 
-    building_return result(building_list.buildings.size());
-    for (auto &dist : result.building_energy_dists) {
-      dist.solar = 0;
-      dist.battery = 0;
-      dist.grid = 0;
+
+    if (random_event == 0) {
+      struct building_return result = NoChange(building_list);
+    } else if (random_event == 1) {
+      struct building_return result = cloudy_failure(building_list);
+    } else if (random_event == 3) {
+      struct building_return result = batter_failure(building_list);
+    } else if (random_event == 4) {
+      struct building_return result = grid_failure(building_list);
     }
+
+    int generator = chargeGenerator(forecast, random_event, building_list);
 
     json response;
     response["buildings"] = json::array();
@@ -117,7 +123,7 @@ int main(void) {
                                        {"grid", dist.grid}});
     }
 
-    response["generator"] = 0;
+    response["generator"] = generator;
 
     // sends json back
     std::string response_str = response.dump() + "\n";
