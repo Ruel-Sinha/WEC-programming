@@ -112,7 +112,7 @@ int main(void) {
       struct building_return result = grid_failure(building_list);
     }
 
-    int generator = chargeGenerator(forecast, random_event, building_list);
+    int generator = chargeBattery(forecast, random_event, building_list);
 
     json response;
     response["buildings"] = json::array();
