@@ -1,4 +1,5 @@
 #include "../globals.h"
+#include "../headers/no_solar.hpp"
 
 building_return NoChange(building_vector buildings) {
   vector<building> allBuildings = buildings.buildings;
@@ -10,7 +11,9 @@ building_return NoChange(building_vector buildings) {
     int load = curBuilding.load;
 
     if(isLectureHall) {
-      
+      buildingEnergyDists.push_back(no_solar_energy_dist(load));
+    }else {
+
     }
   }
 }
