@@ -2,6 +2,8 @@
 #include "../headers/no_solar.hpp"
 #include "../headers/alg_no_event.hpp"
 
+extern const double generator_price;
+
 building_return NoChange(building_vector buildings) {
   vector<building> allBuildings = buildings.buildings;
   vector<energy_dist> buildingEnergyDists;

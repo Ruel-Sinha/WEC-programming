@@ -3,6 +3,8 @@
 
 using namespace std;
 
+extern const double generator_price;
+
 building_return grid_failure(building_vector buildings) {
     vector<building> allBuildings = buildings.buildings;
     vector<energy_dist> buildingEnergyDists;

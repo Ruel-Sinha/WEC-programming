@@ -1,7 +1,7 @@
 #include "../globals.h"
 #include "../headers/no_solar.hpp"
 
-const double generator_price = 1.00;
+extern const double generator_price;
 
 energy_dist no_solar_energy_dist(int load) {
     // if grid is cheaper, always use grid
