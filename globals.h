@@ -50,7 +50,7 @@ struct building_return {
 // persisiting variables:
 
 extern int battery;  // 0 to 100 units
-extern int hour;  // 0 to 24
+extern int hour;     // 0 to 24
 
 extern int non_lecture_demand[12];
 extern int lecture_demand[12];

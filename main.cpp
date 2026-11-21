@@ -20,7 +20,7 @@ using namespace std;
 using json = nlohmann::json;
 
 
-int grid_price = 0;
+double grid_price = 0;
 int random_event = 0;
 
 bool forecast = false;
@@ -31,7 +31,6 @@ int hour = 0;
 
 int non_lecture_demand[12] = {0};
 int lecture_demand[12] = {0};
-
 
 int main(void) {
   std::stringstream ss;
