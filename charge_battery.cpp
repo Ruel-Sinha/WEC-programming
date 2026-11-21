@@ -13,11 +13,11 @@
 // returns the amount to charge the generator by if it is/isn't cloudy
 int chargeBattery(const bool forecast, const int event, const struct building_vector building_struct) {
 
+    int num_lectures = 0;
+    int num_non_lectures = 0;
     if (hour < 12) {
 
         int num_buildings = (building_struct.buildings).size();
-        int num_lectures = 0;
-        int num_non_lectures = 0;
 
         for (int i = 0; i < num_buildings; i++) {
 
