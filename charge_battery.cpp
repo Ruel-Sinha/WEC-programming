@@ -55,11 +55,15 @@ int chargeBattery(const bool forecast, const int event, const struct building_ve
     if ((hour < 20) || ((hour < 23) && (forecast == CLOUDY))) {
         charge_to = estimate_need_lecture + estimate_need_non_lecture;
     } else {
-        charge_to = estimate_need_lecture + estimate_need_non_lecture - 200;
+        if (estimate_need_non_lecture < 200) {
+            charge_to = estimate_need_lecture;
+        } else {
+            charge_to = estimate_need_lecture + estimate_need_non_lecture - 200;
+        }
     }
 
     if (hour > 19) {
-        double chance_grid_cheaper = ((double) 1) / ((double) 3);   // chance that the grid is cheaper and there is no battery failure on a given hour
+        double chance_batter_unneeded = ((double) 7) / ((double) 15);   // chance that the grid is cheaper or there is a battery failure
         double cumulative = std::pow(chance_grid_cheaper, (24 - hour));
         double chance_battery_needed = 1 - cumulative;
         charge_to = static_cast<int>(chance_battery_needed * ((double) charge_to));
@@ -70,7 +74,11 @@ int chargeBattery(const bool forecast, const int event, const struct building_ve
     int charge = 0;
     if (battery < charge_to) {
         charge = charge_to - battery;
-    }    
+    }
+
+    if (charge < 0) {
+        charge = 0;
+    }
     
     return charge;
 
