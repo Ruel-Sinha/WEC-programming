@@ -31,7 +31,7 @@ int chargeBattery(const bool forecast, const int event, const struct building_ve
         }
     }
 
-    if (event == GENERATOR_FAIL) {
+    if ((event == GENERATOR_FAIL) || (hour == 23)) {
         return 0;
     }
 
