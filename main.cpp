@@ -17,7 +17,7 @@
 #include "headers/json.hpp"
 
 using namespace std;
-using json = nlohmann::ordered_json;
+using json = nlohmann::json;
 
 
 double grid_price = 0;
@@ -52,16 +52,40 @@ int main(void) {
 
   char buffer[4096];
   ssize_t bytes_read;
-  std::string line;
+  std::string recv_buffer;
 
   while ((bytes_read = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
-    ss.write(buffer, bytes_read);
+    for (ssize_t k = 0; k < bytes_read; ++k) {
+      if (buffer[k] != '\n' && buffer[k] != '\r') {
+        recv_buffer += buffer[k];
+      }
+    }
 
-    while (std::getline(ss, line)) {
-      if (line.empty() || line == "\r")
-        continue;
+    // 2. Check if we have a complete JSON object { ... }
+    int brace_count = 0;
+    bool in_string = false;
+    bool started = false;
 
-      json Doc = json::parse(line);
+    for (size_t i = 0; i < recv_buffer.size(); ++i) {
+      if (recv_buffer[i] == '"' && (i == 0 || recv_buffer[i - 1] != '\\')) {
+        in_string = !in_string;
+      }
+      if (!in_string) {
+        if (recv_buffer[i] == '{') {
+          brace_count++;
+          started = true;
+        } else if (recv_buffer[i] == '}') {
+          brace_count--;
+        }
+      }
+
+      // 3. Once braces match, we have one complete single-line JSON object
+      if (started && brace_count == 0) {
+        std::string single_line_json = recv_buffer.substr(0, i + 1);
+        recv_buffer.erase(0, i + 1);
+        i = -1;
+        started = false;
+        json Doc = json::parse(single_line_json);
 
       if (Doc["random_event"] == "none") {
         random_event = 0;
@@ -136,7 +160,7 @@ int main(void) {
     }
 
     ss.clear();
-  }
+  }}
 
   close(clientSocket);
   return 0;
