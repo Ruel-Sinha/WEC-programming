@@ -26,7 +26,7 @@ struct energy_dist {
 };
 
 struct building_return {
-  std::vector<int> energy_dist;
+  vector<int> energy_dist;
   int generator = 0;
 
   building_return(size_t n) : energy_dist(n) {};
