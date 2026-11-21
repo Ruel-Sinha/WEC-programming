@@ -27,6 +27,8 @@ struct building_vector {
   building_vector(size_t n) : building(n) {};
 };
 
+extern double generator_cost;
+extern double grid_cost;
 
 // output:
 
