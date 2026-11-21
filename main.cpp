@@ -20,17 +20,17 @@ using namespace std;
 using json = nlohmann::json;
 
 
-grid_price = 0;
-random_event = 0;
+int grid_price = 0;
+int random_event = 0;
 
-forecast = false;
+bool forecast = false;
 
 
-battery = 0;
-hour = 0;
+int battery = 0;
+int hour = 0;
 
-non_lecture_demand[12] = {0};
-lecture_demand[12] = {0};
+int non_lecture_demand[12] = {0};
+int lecture_demand[12] = {0};
 
 
 int main(void) {
