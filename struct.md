@@ -1,6 +1,6 @@
 vector<struct building>
 
 struct building {
-    boolean islecturehall
+    boolean isLectureHall
     int load
 }
