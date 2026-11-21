@@ -1,5 +1,5 @@
+#include <stdbool.h>
 #include <vector>
-#include<stdbool.h>
 
 using namespace std;
 
@@ -15,6 +15,19 @@ extern int random_event;
 extern bool forecast;
 
 struct building {
-    bool isLectureHall;
-    int load;
+  bool isLectureHall;
+  int load;
+};
+
+struct energy_dist {
+  int solar;
+  int battery;
+  int grid;
+};
+
+struct building_return {
+  std::vector<int> energy_dist;
+  int generator = 0;
+
+  building_return(size_t n) : energy_dist(n) {};
 };
