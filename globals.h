@@ -29,8 +29,6 @@ struct building_vector {
   building_vector(size_t n) : buildings(n) {};
 };
 
-extern const double generator_price;
-
 // output:
 
 struct energy_dist {
