@@ -52,11 +52,17 @@ int main(void) {
 
   char buffer[4096];
   ssize_t bytes_read;
+  std::string line;
 
-  json Doc;
   while ((bytes_read = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
     ss.write(buffer, bytes_read);
-    while (ss >> Doc) {
+
+    while (std::getline(ss, line)) {
+      if (line.empty() || line == "\r")
+        continue;
+
+      json Doc = json::parse(line);
+
       if (Doc["random_event"] == "none") {
         random_event = 0;
       } else if (Doc["random_event"] == "cloudy_weather") {
@@ -97,7 +103,6 @@ int main(void) {
 
       struct building_return result(0);
 
-
       if (random_event == 0) {
         result = NoChange(building_list);
       } else if (random_event == 1) {
@@ -129,6 +134,7 @@ int main(void) {
       hour++;
       battery += generator;
     }
+
     ss.clear();
   }
 
