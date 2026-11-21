@@ -143,28 +143,28 @@ int main(void) {
       std::string response_str = "{\n  \"buildings\": [\n";
       for (size_t i = 0; i < result.building_energy_dists.size(); i++) {
 
-          const auto &dist = result.building_energy_dists[i];
+        const auto &dist = result.building_energy_dists[i];
 
-          json b = {
-              {"solar", dist.solar},
-              {"battery", dist.battery},
-              {"grid", dist.grid}
-          };
-          
-          response_str += "    " + b.dump();
-          
-          if (i < result.building_energy_dists.size() - 1) {
-              response_str += ",";
-              response_str += "\n";
-          }
-          
-          battery -= dist.battery;
+        json b = {
+          {"solar", dist.solar},
+          {"battery", dist.battery},
+          {"grid", dist.grid}
+        };
+        
+        response_str += "    " + b.dump();
+        
+        if (i < result.building_energy_dists.size() - 1) {
+          response_str += ",";
+          response_str += "\n";
+        }
+        
+        battery -= dist.battery;
       }
 
       response_str += "],\n";
       response_str += "  \"generator\": " + json(generator).dump() + "\n";
       response_str += "}\n";
-      
+
       // sends json back
       send(clientSocket, response_str.c_str(), response_str.size(), 0);
 
