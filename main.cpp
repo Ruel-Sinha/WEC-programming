@@ -19,6 +19,20 @@
 using namespace std;
 using json = nlohmann::json;
 
+
+grid_price = 0;
+random_event = 0;
+
+forecast = false;
+
+
+battery = 0;
+hour = 0;
+
+non_lecture_demand[12] = {0};
+lecture_demand[12] = {0};
+
+
 int main(void) {
   std::stringstream ss;
 
