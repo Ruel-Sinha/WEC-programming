@@ -41,11 +41,14 @@ struct building_return {
   vector<energy_dist> building_energy_dists;
 
   building_return(size_t n) : building_energy_dists(n) {};
-  building_return(const vector<energy_dist>& dists): building_energy_dists(dists) {}
+
+  building_return(const vector<energy_dist> &dists)
+      : building_energy_dists(dists) {
+  }
 };
 
 // persisiting variables:
 
-extern int battery = 0;  // 0 to 100 units
+extern int battery;  // 0 to 100 units
 
-extern int hour = 0;  // 0 to 24
+extern int hour;  // 0 to 24
