@@ -6,7 +6,7 @@
 struct energy_dist {
   int solar;
   int battery;
-  int grid;
+  int girid;
 };
 
 struct building_return {
