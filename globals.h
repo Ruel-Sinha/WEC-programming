@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdbool.h>
 #include <vector>
 
@@ -27,7 +29,7 @@ struct building_vector {
   building_vector(size_t n) : buildings(n) {};
 };
 
-extern const double generator_price = 1.00;
+extern const double generator_price;
 
 // output:
 

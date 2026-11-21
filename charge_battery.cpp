@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "headers/charge_battery.hpp"
 #include <cmath>
 
 #ifndef GENERATOR_FAIL

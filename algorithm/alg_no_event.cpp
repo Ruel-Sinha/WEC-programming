@@ -1,5 +1,8 @@
 #include "../globals.h"
 #include "../headers/no_solar.hpp"
+#include "../headers/alg_no_event.hpp"
+
+const double generator_price = 1.00;
 
 building_return NoChange(building_vector buildings) {
   vector<building> allBuildings = buildings.buildings;
