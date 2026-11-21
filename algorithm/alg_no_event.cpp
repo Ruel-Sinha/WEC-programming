@@ -4,7 +4,7 @@
 building_return NoChange(building_vector buildings) {
   vector<building> allBuildings = buildings.buildings;
   vector<energy_dist> buildingEnergyDists;
-  int solarRem = 200;
+  int solarRem = 200; // 200 units of solar
 
   for (int i = 0; i < allBuildings.size(); i++) {
     building curBuilding = allBuildings[i];
@@ -21,7 +21,7 @@ building_return NoChange(building_vector buildings) {
           buildingEnergyDists.push_back(energy_dist{load, 0, 0});
           solarRem -= load;
         } else {
-          int loadRem = load - solarRem;
+          int loadRem = load - solarRem; // remaining load after solar
           if(grid_price <= generator_price) {
             buildingEnergyDists.push_back(energy_dist(solarRem, loadRem, 0));
           } else {
@@ -29,7 +29,7 @@ building_return NoChange(building_vector buildings) {
               buildingEnergyDists.push_back(energy_dist(solarRem, 0, loadRem));
               battery -= loadRem;
             } else {
-              loadRem -= battery;
+              loadRem -= battery; // after using all the battery
               buildingEnergyDists.push_back(energy_dist(solarRem, loadRem, battery));
             }
           }
@@ -37,7 +37,10 @@ building_return NoChange(building_vector buildings) {
         }
       }
     }
+
   }
+
+  return building_return(buildingEnergyDists);
 }
 
 /*
