@@ -10,5 +10,5 @@ void cloudy_failure(building_vector buildings) {
         totalLoad += allBuildings[i].load;
     }
 
-    if()   
+    if(grid_)   
 }
