@@ -5,18 +5,23 @@
 #endif
 
 #ifndef CLOUDY
-#define CLOUDY 1
+#define CLOUDY true
 #endif
 
 // returns the amount to charge the generator by if it is/isn't cloudy
-int chargeGenerator(bool forecast, int event) {
+int chargeGenerator(bool forecast, int event, struct building_vector buildings, ) {
+
+
+
 
     if (event == GENERATOR_FAIL) {
         return 0;
     }
 
+    
+
     if (forecast == CLOUDY) {
-        double 
+
     } else {
 
     }

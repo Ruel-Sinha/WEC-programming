@@ -38,7 +38,7 @@ struct energy_dist {
   int grid;
 };
 
-struct building_return {    // OUTPUT
+struct building_return {
   vector<int> energy_dist;
   int generator = 0;
 
