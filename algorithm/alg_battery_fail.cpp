@@ -3,8 +3,6 @@
 
 using namespace std;
 
-const double generator_price = 1.00;
-
 building_return battery_failure(building_vector buildings) {
     vector<building> allBuildings = buildings.buildings;
     vector<energy_dist> buildingEnergyDists;

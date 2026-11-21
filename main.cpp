@@ -24,6 +24,7 @@ int random_event = 0;
 
 bool forecast = false;
 
+const double generator_price = 1.00;
 
 int battery = 0;
 int hour = 0;
