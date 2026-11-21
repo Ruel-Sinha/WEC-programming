@@ -145,13 +145,13 @@ int main(void) {
 
         const auto &dist = result.building_energy_dists[i];
 
-        json b = {
+        nlohmann::ordered_json distribution = {
           {"solar", dist.solar},
           {"battery", dist.battery},
           {"grid", dist.grid}
         };
         
-        response_str += "    " + b.dump();
+        response_str += "    " + distribution.dump();
         
         if (i < result.building_energy_dists.size() - 1) {
           response_str += ",";
