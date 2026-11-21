@@ -50,7 +50,7 @@ int main(void) {
   bind(serverSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress));
 
   // listen to socket
-  listen(serverSocket, 5);
+  listen(serverSocket, 24);
 
   // accept connection requests
   int clientSocket = accept(serverSocket, nullptr, nullptr);
@@ -101,15 +101,17 @@ int main(void) {
       building_list.buildings.push_back(building1);
     }
 
+    struct building_return result(0);
+
 
     if (random_event == 0) {
-      struct building_return result = NoChange(building_list);
+      result = NoChange(building_list);
     } else if (random_event == 1) {
-      struct building_return result = cloudy_failure(building_list);
+      result = cloudy_failure(building_list);
     } else if (random_event == 3) {
-      struct building_return result = batter_failure(building_list);
+      result = battery_failure(building_list);
     } else if (random_event == 4) {
-      struct building_return result = grid_failure(building_list);
+      result = grid_failure(building_list);
     }
 
     int generator = chargeGenerator(forecast, random_event, building_list);
