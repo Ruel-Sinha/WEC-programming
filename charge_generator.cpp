@@ -1,4 +1,4 @@
-#include main.cpp
+#include<main.cpp>
 
 #define GENERATOR_FAIL 2
 

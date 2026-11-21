@@ -5,12 +5,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#include alg_battery_fail.h
-#include alg_cloudy.h
-#include alg_generator.h
-#include alg_grid_fail.h
-#include alg_no_event.h
-#include charge_generator.h
+#include<alg_battery_fail.hpp>
+#include<alg_cloudy.hpp>
+#include<alg_generator_fail.hpp>
+#include<alg_grid_fail.hpp>
+#include<alg_no_event.hpp>
+#include<charge_generator.hpp>
 
 using namespace std;
 
