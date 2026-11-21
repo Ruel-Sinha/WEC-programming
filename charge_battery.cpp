@@ -55,7 +55,7 @@ int chargeBattery(const bool forecast, const int event, const struct building_ve
     if ((hour < 20) || ((hour < 23) && (forecast == CLOUDY))) {
         charge_to = estimate_need_lecture + estimate_need_non_lecture;
     } else {
-        charge_to = estimate_need_lecture;
+        charge_to = estimate_need_lecture + estimate_need_non_lecture - 200;
     }
 
     if (hour > 19) {
