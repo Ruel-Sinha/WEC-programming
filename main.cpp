@@ -1,4 +1,5 @@
 #include "globals.h"
+#include <arpa/inet.h>
 #include <cstdio>
 #include <netinet/in.h>
 #include <sstream>
@@ -35,108 +36,102 @@ int main(void) {
   std::stringstream ss;
 
   // creates the socket
-  int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-
-  int opt = 1;
-  setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+  int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
 
   // specifies address
   sockaddr_in serverAddress{};
   serverAddress.sin_family = AF_INET;
   serverAddress.sin_port = htons(8800);
-  serverAddress.sin_addr.s_addr = INADDR_ANY;
+  inet_pton(AF_INET, "127.0.0.1", &serverAddress.sin_addr);
 
-  // binding socket
-  bind(serverSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress));
-
-  // listen to socket
-  listen(serverSocket, 24);
-
-  // accept connection requests
-  int clientSocket = accept(serverSocket, nullptr, nullptr);
+  if (connect(clientSocket, (struct sockaddr *)&serverAddress,
+              sizeof(serverAddress)) < 0) {
+    perror("Connection failed");
+    return 1;
+  }
 
   char buffer[4096];
   ssize_t bytes_read;
-  while ((bytes_read = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
-    ss.write(buffer, bytes_read);
-  }
 
   json Doc;
-  while (ss >> Doc) {
-    if (Doc["random_event"] == "none") {
-      random_event = 0;
-    } else if (Doc["random_event"] == "cloudy_weather") {
-      random_event = 1;
-    } else if (Doc["random_event"] == "generator_failure") {
-      random_event = 2;
-    } else if (Doc["random_event"] == "battery_failure") {
-      random_event = 3;
-    } else if (Doc["random_event"] == "grid_failure") {
-      random_event = 4;
-    } else {
-      throw runtime_error("Random Event does not match anything");
-    }
-
-    // sets forecast
-    if (Doc["forecast"] == "cloudy") {
-      forecast = true;
-    } else if (Doc["forecast"] == "not cloudy") {
-      forecast = false;
-    } else {
-      throw runtime_error("Weather Forecast does not match anything");
-    }
-
-    // sets grid_price
-    grid_price = Doc["grid_price"];
-
-    // populating building_vector
-    struct building_vector building_list(0);
-    for (size_t i = 0; i < Doc["loads"].size(); i++) {
-      struct building building1;
-      if (Doc["loads"][i]["type"] == "lecture_hall") {
-        building1 = {true, Doc["loads"][i]["load"]};
+  while ((bytes_read = recv(clientSocket, buffer, sizeof(buffer), 0)) > 0) {
+    ss.write(buffer, bytes_read);
+    while (ss >> Doc) {
+      if (Doc["random_event"] == "none") {
+        random_event = 0;
+      } else if (Doc["random_event"] == "cloudy_weather") {
+        random_event = 1;
+      } else if (Doc["random_event"] == "generator_failure") {
+        random_event = 2;
+      } else if (Doc["random_event"] == "battery_failure") {
+        random_event = 3;
+      } else if (Doc["random_event"] == "grid_failure") {
+        random_event = 4;
       } else {
-        building1 = {false, Doc["loads"][i]["load"]};
+        throw runtime_error("Random Event does not match anything");
       }
-      building_list.buildings.push_back(building1);
+
+      // sets forecast
+      if (Doc["forecast"] == "cloudy") {
+        forecast = true;
+      } else if (Doc["forecast"] == "not cloudy") {
+        forecast = false;
+      } else {
+        throw runtime_error("Weather Forecast does not match anything");
+      }
+
+      // sets grid_price
+      grid_price = Doc["grid_cost"];
+
+      // populating building_vector
+      struct building_vector building_list(0);
+      for (size_t i = 0; i < Doc["loads"].size(); i++) {
+        struct building building1;
+        if (Doc["loads"][i]["type"] == "lecture_hall") {
+          building1 = {true, Doc["loads"][i]["load"]};
+        } else {
+          building1 = {false, Doc["loads"][i]["load"]};
+        }
+        building_list.buildings.push_back(building1);
+      }
+
+      struct building_return result(0);
+
+
+      if (random_event == 0) {
+        result = NoChange(building_list);
+      } else if (random_event == 1) {
+        result = cloudy_failure(building_list);
+      } else if (random_event == 3) {
+        result = battery_failure(building_list);
+      } else if (random_event == 4) {
+        result = grid_failure(building_list);
+      }
+
+      int generator = chargeBattery(forecast, random_event, building_list);
+
+      json response;
+      response["buildings"] = json::array();
+
+      for (const auto &dist : result.building_energy_dists) {
+        response["buildings"].push_back({{"solar", dist.solar},
+                                         {"battery", dist.battery},
+                                         {"grid", dist.grid}});
+        battery -= dist.battery;
+      }
+
+      response["generator"] = generator;
+
+      // sends json back
+      std::string response_str = response.dump() + "\n";
+      send(clientSocket, response_str.c_str(), response_str.size(), 0);
+
+      hour++;
+      battery += generator;
     }
-
-    struct building_return result(0);
-
-
-    if (random_event == 0) {
-      result = NoChange(building_list);
-    } else if (random_event == 1) {
-      result = cloudy_failure(building_list);
-    } else if (random_event == 3) {
-      result = battery_failure(building_list);
-    } else if (random_event == 4) {
-      result = grid_failure(building_list);
-    }
-
-    int generator = chargeBattery(forecast, random_event, building_list);
-
-    json response;
-    response["buildings"] = json::array();
-
-    for (const auto &dist : result.building_energy_dists) {
-      response["buildings"].push_back({{"solar", dist.solar},
-                                       {"battery", dist.battery},
-                                       {"grid", dist.grid}});
-      battery -= dist.battery;
-    }
-
-    response["generator"] = generator;
-
-    // sends json back
-    std::string response_str = response.dump() + "\n";
-    send(clientSocket, response_str.c_str(), response_str.size(), 0);
-
-    hour++;
-    battery += generator;
+    ss.clear();
   }
 
   close(clientSocket);
-  close(serverSocket);
   return 0;
 }
