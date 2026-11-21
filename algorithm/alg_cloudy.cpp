@@ -1,4 +1,5 @@
 #include "../globals.h"
+#include "../headers/no_solar.hpp"
 
 using namespace std;
 
@@ -9,27 +10,7 @@ building_return cloudy_failure(building_vector buildings) {
     for(int i = 0; i < allBuildings.size(); i++) {
         int load = allBuildings[i].load;
 
-        // if grid is cheaper, always use grid
-        if(grid_price < generator_price) {
-            energy_dist dist = {0, 0, load};
-            buildingEnergyDists.push_back(dist);
-        } else {
-            //consume all the battery first
-            if(battery > 0) {
-                if(battery <= load) { // battery not enough
-                    energy_dist dist = {0, battery, load - battery};
-                    battery = 0;
-                    buildingEnergyDists.push_back(dist);
-                } else { // consume all from battery
-                    energy_dist dist = {0, load, 0};
-                    battery -= load;
-                    buildingEnergyDists.push_back(dist);
-                }
-            } else { // nothing in battery, still uses grid
-                energy_dist dist = {0, 0, load};
-                buildingEnergyDists.push_back(dist);
-            }
-        }
+        buildingEnergyDists.push_back(no_solar_energy_dist(load))
     }
 
     building_return dist_return = {buildingEnergyDists};

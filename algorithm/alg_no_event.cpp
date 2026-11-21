@@ -1,17 +1,16 @@
 #include "../globals.h"
 
-building_return NoChange(building_vector a[]) {
-  int size = sizeof(a->building);
-  int solar_rem = 200;
+building_return NoChange(building_vector buildings) {
+  vector<building> allBuildings = buildings.buildings;
+  vector<energy_dist> buildingEnergyDists;
 
-  building_return bu(size);
+  for(int i = 0; i < allBuildings.size(); i++) {
+    building curBuilding = allBuildings[i];
+    bool isLectureHall = curBuilding.isLectureHall;
+    int load = curBuilding.load;
 
-  for (int i = 0; i < size; i++) {
-    if (a[i]->isLectureHall == true) {
-    } else {
-      if (a[i]->load < solar_rem) {
-        bu[i]->energy_dist
-      }
+    if(isLectureHall) {
+      
     }
   }
 }
