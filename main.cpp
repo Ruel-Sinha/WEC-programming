@@ -139,20 +139,33 @@ int main(void) {
 
       int generator = chargeBattery(forecast, random_event, building_list);
 
-      json response;
-      response["buildings"] = json::array();
 
-      for (const auto &dist : result.building_energy_dists) {
-        response["buildings"].push_back({{"solar", dist.solar},
-                                         {"battery", dist.battery},
-                                         {"grid", dist.grid}});
-        battery -= dist.battery;
+      std::string response_str = "{\n  \"buildings\": [\n";
+      for (size_t i = 0; i < result.building_energy_dists.size(); i++) {
+
+          const auto &dist = result.building_energy_dists[i];
+
+          json b = {
+              {"solar", dist.solar},
+              {"battery", dist.battery},
+              {"grid", dist.grid}
+          };
+          
+          response_str += "    " + b.dump();
+          
+          if (i < result.building_energy_dists.size() - 1) {
+              response_str += ",";
+              response_str += "\n";
+          }
+          
+          battery -= dist.battery;
       }
 
-      response["generator"] = generator;
-
+      response_str += "],\n";
+      response_str += "  \"generator\": " + json(generator).dump() + "\n";
+      response_str += "}\n";
+      
       // sends json back
-      std::string response_str = response.dump() + "\n";
       send(clientSocket, response_str.c_str(), response_str.size(), 0);
 
       hour++;
