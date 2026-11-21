@@ -10,5 +10,7 @@ void cloudy_failure(building_vector buildings) {
         totalLoad += allBuildings[i].load;
     }
 
-    if(grid_)   
+    if(grid_price < generator_price) {
+        
+    }   
 }

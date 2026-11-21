@@ -23,8 +23,8 @@ struct building {
 };
 
 struct building_vector {
-  vector<building> building;
-  building_vector(size_t n) : building(n) {};
+  vector<building> buildings;
+  building_vector(size_t n) : buildings(n) {};
 };
 
 extern const double generator_price;
@@ -38,10 +38,10 @@ struct energy_dist {
 };
 
 struct building_return {
-  vector<int> energy_dist;
+  vector<energy_dist> building_energy_dists;
   int generator = 0;
 
-  building_return(size_t n) : energy_dist(n) {};
+  building_return(size_t n) : building_energy_dists(n) {};
 };
 
 // persisiting variables:
