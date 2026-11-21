@@ -64,8 +64,18 @@ void main() {
     }
     // sets grid_price
     grid_price = Doc["grid_price"];
-    // TODO: populate building_vector
-
+    // populating building_vector
+    struct building_vector building_list(0);
+    for (int i = 0; i < std::size(Doc["loads"]); i++) {
+        struct building building1;
+        if (Doc["loads"][i]["type"] == "lecture_hall") {
+            building1 = {true, Doc["loads"][i]["load"]};
+        }
+        else{
+            building1 = {false, Doc["loads"][i]["load"]};
+        }
+        building_list.building.push_back(building1);
+    }
     // close the socket
     close(serverSocket);
 }
