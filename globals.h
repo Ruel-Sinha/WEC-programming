@@ -20,7 +20,7 @@ struct building {
 };
 
 struct building_vector {
-  vector<int> building;
+  vector<building> building;
   building_vector(size_t n) : building(n) {};
 };
 
