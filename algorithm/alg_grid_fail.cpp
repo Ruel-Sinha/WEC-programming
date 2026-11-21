@@ -25,10 +25,24 @@ building_return grid_failure(building_vector buildings) {
                     battery = 0;
                 }
             } else {
-                int solar, batteryNeed, grid;
-              //  if(solar_energy >= )
+                if(solar_energy >= load) {
+                    buildingEnergyDists.push_back(energy_dist{load, 0, 0});
+                    solar_energy -= load;
+                }else {
+                    int loadRem = load - solar_energy;
+
+                    if(battery >= loadRem) {
+                        buildingEnergyDists.push_back(energy_dist{solar_energy, loadRem, 0});
+                        battery -= loadRem;
+                    } else {
+                        buildingEnergyDists.push_back(energy_dist{solar_energy, battery, 0});
+                        battery = 0;
+                    }
+                }
             }
         }
+
+        return building_return{buildingEnergyDists};
     }
 
     for(int i = 0; i < allBuildings.size(); i++) {
