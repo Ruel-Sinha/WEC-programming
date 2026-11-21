@@ -9,7 +9,11 @@ building_return grid_failure(building_vector buildings) {
 
     for(int i = 0; i < allBuildings.size(); i++) {
         int load = allBuildings[i].load;
-        if (solar_energy <= load) { // not enough solar
+        if (allBuildings[i].isLectureHall) {
+            energy_dist dist = {0, 0, load};
+            buildingEnergyDists.push_back(dist);
+        }
+        else if (solar_energy <= load) { // not enough solar
             energy_dist dist = {solar_energy, 0, load - solar_energy};
             buildingEnergyDists.push_back(dist);
         } else{ // consume all solar
