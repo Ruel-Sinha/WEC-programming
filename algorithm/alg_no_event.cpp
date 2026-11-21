@@ -2,8 +2,6 @@
 #include "../headers/no_solar.hpp"
 #include "../headers/alg_no_event.hpp"
 
-extern const double generator_price;
-
 building_return NoChange(building_vector buildings) {
   vector<building> allBuildings = buildings.buildings;
   vector<energy_dist> buildingEnergyDists;
@@ -62,7 +60,7 @@ building_return NoChange(building_vector buildings) {
           solarRem -= load;
         } else {
           int loadRem = load - solarRem; // remaining load after solar
-          if(grid_price <= generator_price) {
+          if(grid_price <= 1.00) {
             buildingEnergyDists.push_back(energy_dist{solarRem, 0, loadRem});
           } else {
             if(battery >= loadRem) {

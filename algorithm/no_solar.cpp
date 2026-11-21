@@ -1,11 +1,9 @@
 #include "../globals.h"
 #include "../headers/no_solar.hpp"
 
-extern const double generator_price;
-
 energy_dist no_solar_energy_dist(int load) {
     // if grid is cheaper, always use grid
-    if(grid_price < generator_price) {
+    if(grid_price < 1.00) {
         energy_dist dist = {0, 0, load};
         return dist;
     } else {
