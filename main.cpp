@@ -10,7 +10,6 @@
 
 #include "headers/alg_battery_fail.hpp"
 #include "headers/alg_cloudy.hpp"
-#include "headers/alg_generator_fail.hpp"
 #include "headers/alg_grid_fail.hpp"
 #include "headers/alg_no_event.hpp"
 #include "headers/charge_battery.hpp"
