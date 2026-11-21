@@ -5,8 +5,6 @@ using namespace std;
 
 // input:
 
-extern int grid_price;
-
 extern double grid_price;
 /*
 0 - no event
