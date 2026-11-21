@@ -4,6 +4,7 @@
 building_return NoChange(building_vector buildings) {
   vector<building> allBuildings = buildings.buildings;
   vector<energy_dist> buildingEnergyDists;
+  int solarRem = 200;
 
   for (int i = 0; i < allBuildings.size(); i++) {
     building curBuilding = allBuildings[i];
@@ -12,7 +13,35 @@ building_return NoChange(building_vector buildings) {
 
     if (isLectureHall) {
       buildingEnergyDists.push_back(no_solar_energy_dist(load));
-    } else {
+    }else {
+      if(solarRem <= 0) {
+        buildingEnergyDists.push_back(no_solar_energy_dist(load));
+      } else {
+        if(solarRem >= load) {
+          buildingEnergyDists.push_back(energy_dist{load, 0, 0});
+          solarRem -= load;
+        } else {
+          int loadRem = load - solarRem;
+          if(grid_price <= generator_price) {
+            buildingEnergyDists.push_back(energy_dist(solarRem, loadRem, 0));
+          } else {
+            if(battery >= loadRem) {
+              buildingEnergyDists.push_back(energy_dist(solarRem, 0, loadRem));
+              battery -= loadRem;
+            } else {
+              loadRem -= battery;
+              buildingEnergyDists.push_back(energy_dist(solarRem, loadRem, battery));
+            }
+          }
+          solarRem = 0;
+        }
+      }
     }
   }
 }
+
+/*
+grid failure
+
+
+*/
