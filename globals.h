@@ -15,7 +15,7 @@ extern double grid_price;
 */
 extern int random_event;
 
-extern bool forecast;   // 1 == cloudy
+extern bool forecast;  // 1 == cloudy
 
 struct building {
   bool isLectureHall;
@@ -46,6 +46,6 @@ struct building_return {
 
 // persisiting variables:
 
-extern int battery = 0;   // 0 to 100 units
+extern int battery = 0;  // 0 to 100 units
 
-extern int hour = 0;      // 0 to 24
+extern int hour = 0;  // 0 to 24
